@@ -1,0 +1,99 @@
+info:
+  app:
+    name: <%=projectName%>
+    encoding: utf-8
+  java:
+    version: 1.8
+server:
+  port: 8295
+management:
+  port: 10848
+  context-path: '/mgnt'
+  security:
+    enabled: false
+<% if (eureka) { %>
+eureka:
+  client:
+    service-url:
+      defaultZone: 'http://eureka:8763/eureka/'
+  instance:
+    metadata-map:
+      management:
+        port: ${management.port}
+        context-path: ${management.context-path}
+      health:
+        path: /health
+    status-page-url-path: /info
+    health-check-url-path: /health
+    prefer-ip-address: false
+<% } %>
+spring:
+  application:
+    name: <%=projectName%>
+  aop:
+    proxy-target-class: true
+<% if (mysql) { %>
+  datasource:
+    username: <%=mysqlUser%>
+    password: <%=mysqlPwd%>
+    url: jdbc:mysql://<%=mysqlHost%>:<%=mysqlPort%>/<%=mysqlDb%>?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 5
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true
+          slow-sql-millis: 10
+          db-type: mysql
+        config:
+          enabled: true
+        encoding:
+          enabled: true
+        wall:
+          enabled: true
+      aop-patterns: <%=fullApp%>
+      validation-query: select 1
+      max-active: 10
+      min-evictable-idle-time-millis: 30000
+<% } %>
+<% if (eureka) { %>
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+<% } %>
+<% if (config) { %>
+    config:
+      discovery:
+        enabled: true
+        service-id: 'config-server'
+      fail-fast: true
+<% } %>
+<% if (mysql) { %>
+mybatis:
+  type-handlers-package: '<%=fullApp%>.domain.type.handler'
+  mapper-locations: 'classpath*:mapper/**/*Mapper.xml'
+  type-aliases-package: '<%=fullApp%>.domain'
+<% } %>
+<% if (eureka) { %>
+ribbon:
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 3
+  OkToRetryOnAllOperations: true
+  ConnectTimeout: 1500
+  ReadTimeout: 2000
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 2000
+<% } %>
+<% if (mysql) { %>
+flyway:
+  enabled: true
+  baseline-on-migrate: true
+  validate-on-migrate: false
+<% } %>

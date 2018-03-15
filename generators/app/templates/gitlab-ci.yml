@@ -1,0 +1,73 @@
+image: maven:3.5.0-jdk-8-alpine
+
+before_script:
+  - mvn clean
+
+stages:
+  - install
+  - test
+  - analysis
+
+mvn_install:
+  script:
+    - mvn install -Dmaven.test.skip=true
+  stage: install
+  only:
+    - develop
+    - master
+    - ^hotfix\/.+$
+    - ^release\/.+$
+    - ^test\/.+$
+
+unit_test:
+  script:
+    - mvn test
+  stage: test
+  only:
+    - develop
+    - master
+    - ^hotfix\/.+$
+    - ^release\/.+$
+    - ^test\/.+$
+
+integration_test:
+  script:
+    - mvn integration-test
+  stage: test
+  only:
+    - develop
+    - master
+    - ^hotfix\/.+$
+    - ^release\/.+$
+    - ^test\/.+$
+
+# 'External is fail because you have critical or blocker new issue.'
+# 还是得开启,否则每次提交校验就没意义了
+
+#sonarqube_preview:
+#  script:
+#    - git config --global user.email "sonar@gogen.com.cn"
+#    - git config --global user.name "Sonar"
+#    - git checkout origin/master
+#    - git merge $CI_COMMIT_SHA --no-commit --no-ff
+#    - mvn --batch-mode verify sonar:sonar -Dsonar.host.url=$SONAR_URL -Dsonar.analysis.mode=preview -Dsonar.gitlab.project_id=$CI_PROJECT_PATH -Dsonar.gitlab.commit_sha=$CI_COMMIT_SHA -Dsonar.gitlab.ref_name=$CI_COMMIT_REF_NAME
+#  stage: analysis
+#  except:
+#    - develop
+#    - master
+#    - ^hotfix\/.+$
+#    - ^release\/.+$
+
+sonarqube:
+  script:
+    - mvn --batch-mode verify sonar:sonar -Dsonar.host.url=$SONAR_URL
+  stage: analysis
+  only:
+    - develop
+    - master
+    - ^hotfix\/.+$
+    - ^release\/.+$
+    - ^test\/.+$
+
+after_script:
+  - mvn clean

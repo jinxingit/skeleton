@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+
+    <context id="order-ms">
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!--com.mysql.jdbc.Driver-->
+        <!--com.mysql.cj.jdbc.Driver-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql:///order?serverTimezone=UTC"
+                        userId="root" password="123456"/>
+
+        <javaTypeResolver>
+            <!--当数据类型为DECIMAL或者NUMERIC的时候, 如果是true的话则总是使用java.math.BigDecimal-->
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!--DTO生成处-->
+        <javaModelGenerator targetPackage="<%=fullApp%>.domain"
+                            targetProject="${dao.target.dir}">
+            <property name="enableSubPackages" value="true"/>
+            <property name="rootClass" value="com.chehejia.common.model.BasicDomain"/>
+        </javaModelGenerator>
+
+        <!--Mapper.xml生成位置 -->
+        <sqlMapGenerator targetPackage="mapper"
+                         targetProject="${dao.xml.target.dir}">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <!--Mapper生成位置 -->
+        <javaClientGenerator targetPackage="<%=fullApp%>.persistence"
+                             targetProject="${dao.target.dir}" type="XMLMAPPER">
+            <property name="enableSubPackages" value="true"/>
+            <property name="rootInterface" value="com.chehejia.common.persistence.CrudMapper"/>
+        </javaClientGenerator>
+
+        <table alias="order" tableName="t_order" domainObjectName="Order"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <columnOverride column="status"
+                            jdbcType="TINYINT"
+                            javaType="<%=fullApp%>.domain.type.OrderStatus"
+                            typeHandler="<%=fullApp%>.domain.type.handler.OrderStatusHandler"/>
+            <columnOverride column="create_time" javaType="java.time.OffsetDateTime" isGeneratedAlways="true"/>
+            <columnOverride column="update_time" javaType="java.time.OffsetDateTime" isGeneratedAlways="true"/>
+            <columnOverride column="delete_time" javaType="java.time.OffsetDateTime"/>
+        </table>
+
+    </context>
+</generatorConfiguration>

@@ -1,0 +1,30 @@
+
+# 忽略所有target目录
+target/
+.idea/
+
+# 忽略idea的配置文件
+*.iml
+/*.iml
+
+# 忽略lib目录
+lib/
+
+# 忽略log文件
+*.log
+*.log.*
+logs/
+# 忽略所有生成的 html文件,
+#*.html
+# foo.html是手工维护的，所以例外.
+#!foo.html
+# 忽略所有.o和 .a文件.
+#*.[oa]
+
+#忽略Eclipse 的 .project
+.project
+.classpath
+.settings
+.settings/
+build.cmd
+app/src/main/resources/public

@@ -1,0 +1,31 @@
+{
+  "name": "generator-chehejia-springboot",
+  "version": "0.0.19",
+  "description": "chehejia spring boot project generator",
+  "main": "app/index.js",
+  "keywords": [
+    "generator","yeoman-generator"
+  ],
+  "files": [
+    "generators"
+  ],
+  "repository": {
+    "type" : "git",
+    "url" : "https://git@git.chj.com:jinxin/skeleton.git"
+  },
+  "dependencies": {
+    "yeoman-generator": "~0.21.0",
+    "shelljs": "0.7.4",
+    "mkdirp": "0.5.1",
+    "chalk": "1.1.3"
+  },
+    "devDependencies": {
+    "mocha": "~3.1.2"
+  },
+  "engines": {
+    "node": ">=4.4.0",
+    "npm": ">=2.14.2"
+  },
+  "author": "jinxin",
+  "license": "GPL-3.0"
+}
