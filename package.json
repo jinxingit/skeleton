@@ -11,7 +11,7 @@
   ],
   "repository": {
     "type" : "git",
-    "url" : "https://git@git.chj.com:jinxin/skeleton.git"
+    "url" : "https://github.com/jinxingit/skeleton.git"
   },
   "dependencies": {
     "yeoman-generator": "~0.21.0",
