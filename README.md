@@ -21,7 +21,7 @@
 
 
 ## USAGE
-依赖 euraka,config-service两个服务，如不会git@git.chj.com:jinxin/wms.git，下载启动。
+如果是应用了springcloud,就会依赖 euraka,config-service两个服务，如不会请自行查询相关资料，下载启动。
 
 ```
 brew install node
